@@ -1,0 +1,77 @@
+// Variables for consistency
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+$background-color: #f4f4f4;
+$font-color: #333;
+$border-radius: 5px;
+$padding: 10px;
+
+.shows-container {
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    input,
+    button {
+      padding: $padding;
+      border-radius: $border-radius;
+      border: 1px solid $primary-color;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: $primary-color;
+      color: white;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $secondary-color;
+      }
+    }
+  }
+
+  h2 {
+    margin-top: 20px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    /* New styles to limit height and enable scrolling */
+    max-height: 500px; /* Adjust height to fit approx. 5 events */
+    overflow-y: auto;
+    border: 1px solid #ddd; /* Optional border to make the scrollable area clear */
+    padding-right: 10px; /* Extra padding to avoid overlap with scrollbar */
+
+    li {
+      display: flex;
+      justify-content: space-between; // Push buttons to the right
+      align-items: center; // Center items vertically
+      padding: $padding;
+      border-bottom: 1px solid #ddd;
+
+      .show-details {
+        flex-grow: 1; // Take up remaining space
+        display: flex;
+        flex-direction: column;
+      }
+
+      .show-actions {
+        button {
+          margin-left: 10px;
+          background-color: $primary-color;
+          color: white;
+          border: none;
+          padding: $padding;
+          cursor: pointer;
+
+          &:hover {
+            background-color: $secondary-color;
+          }
+        }
+      }
+    }
+  }
+}

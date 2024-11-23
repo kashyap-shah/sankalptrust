@@ -1,0 +1,61 @@
+// Existing variables for consistency
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+$background-color: #f4f4f4;
+$font-color: #333;
+$border-radius: 5px;
+$padding: 10px;
+
+body {
+  background-color: $background-color;
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+
+  h1 {
+    text-align: center;
+    color: $primary-color;
+  }
+
+  nav {
+    background-color: $primary-color;
+    padding: $padding;
+    margin-bottom: 20px;
+
+    ul {
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      list-style: none;
+
+      li {
+        padding: $padding $padding * 2;
+        cursor: pointer;
+        color: white;
+
+        // Style for active page highlight
+        &.active {
+          background-color: $secondary-color;
+          font-weight: bold; // Optional: makes the active item bold
+        }
+
+        &:hover {
+          background-color: $secondary-color;
+        }
+      }
+    }
+  }
+}
+
+.component-wrapper {
+  background-color: white;
+  padding: $padding * 2;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: $border-radius;
+}
