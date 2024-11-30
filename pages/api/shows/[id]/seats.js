@@ -9,26 +9,22 @@ export default async function handler(req, res) {
 
   try {
     // Fetch seat configuration for the given show
-    const [showResults] = await pool.query(
-      'SELECT seat_rows, seat_columns FROM shows WHERE id = ?',
-      [showId]
-    );
+    const showQuery = 'SELECT seat_rows, seat_columns FROM shows WHERE id = $1';
+    const showResult = await pool.query(showQuery, [showId]);
 
-    if (showResults.length === 0) {
+    if (showResult.rows.length === 0) {
       return res.status(404).json({ error: 'Show not found' });
     }
 
-    const { seat_rows, seat_columns } = showResults[0];
+    const { seat_rows, seat_columns } = showResult.rows[0];
 
     // Fetch booked seats for the given show
-    const [bookedResults] = await pool.query(
-      'SELECT seat_row, seat_column FROM bookings WHERE show_id = ?',
-      [showId]
-    );
+    const bookedQuery = 'SELECT seat_row, seat_column FROM bookings WHERE show_id = $1';
+    const bookedResult = await pool.query(bookedQuery, [showId]);
 
     // Create a set of booked seats for quick lookup
     const bookedSeats = new Set(
-      bookedResults.map((seat) => `${seat.seat_row}-${seat.seat_column}`)
+      bookedResult.rows.map((seat) => `${seat.seat_row}-${seat.seat_column}`)
     );
 
     // Generate all seats with their booking status
