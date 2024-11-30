@@ -40,13 +40,15 @@ export default async function handler(req, res) {
 
       const updateQuery = `
         UPDATE users
-        SET username = $1, phone_number = $2
-        ${password ? ", password = $3" : ""}
-        WHERE id = $4 AND end_date IS NULL
-      `;
+        SET username = $1, phone_number = $2`;
 
       const params = [username, phone_number];
-      if (password) params.push(password);
+      if (password){
+        updateQuery = updateQuery + ", password = $3 WHERE id = $4 AND end_date IS NULL"
+        params.push(password);
+      }else{
+        updateQuery = updateQuery + " WHERE id = $3 AND end_date IS NULL"
+      }
       params.push(id);
 
       const updateResult = await pool.query(updateQuery, params);
