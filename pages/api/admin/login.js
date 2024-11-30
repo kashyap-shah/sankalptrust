@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
   try {
     const result = await pool.query("SELECT * FROM users WHERE username = $1 AND role = 'admin'", [username]);
-    console.log("result",result);
+    
     const rows = result.rows;
     if (rows.length === 0) return res.status(400).send("User not found");
 
