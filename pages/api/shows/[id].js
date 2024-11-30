@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   if (req.method === "GET") {
     try {
 
-      const [show] = await pool.execute(
+      const [show] = await pool.query(
         "SELECT * FROM shows WHERE id = ? AND deleted_at IS NULL",
         [id]
       );
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
         WHERE id = ? AND deleted_at IS NULL
       `;
 
-      const [result] = await pool.execute(sql, [
+      const [result] = await pool.query(sql, [
         title,
         time,
         venue,
@@ -92,7 +92,7 @@ export default async function handler(req, res) {
         WHERE id = ? AND deleted_at IS NULL
       `;
 
-      const [result] = await pool.execute(sql, [id]);
+      const [result] = await pool.query(sql, [id]);
 
       if (result.affectedRows === 0) {
         return res.status(404).json({ error: "Show not found" });
