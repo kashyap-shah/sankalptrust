@@ -1,0 +1,82 @@
+@import "./mixins";
+@import "./variables";
+
+/*Bootstrap theme overwrite css*/
+$primary: #ffad3d;
+$secondary: #38db47;
+$success: #34c38f;
+$info: #50a5f1;
+$warning: #f09e1f;
+$danger: #c2000b;
+$success: #61b258;
+$light: #d9d9d9;
+$dark: #333333;
+$link-color: #556ee6;
+$link-hover-color: #000000;
+$btn-color: #ffffff;
+$border-color: #e6ebf1;
+$body-font-family: "Avenir";
+$font-sans-serif: "Avenir";
+
+/* Colors*/
+$blue: #1593ff;
+$lwhite: #b0b0b0;
+$white: #ffffff;
+$black: #000000;
+$blackbox: #1a1a1a;
+$lblack: #2a2a2a;
+$btnhover: #efedf0;
+$lightblack: #424242;
+$grey: #757575;
+$lgrey: #a7a9ab;
+$dgrey: #555555;
+$pink: #f7dfff;
+$lightgrey: #909191;
+$green: #04d121;
+$lgreen: #61a131;
+$red: #c2000b;
+$orange: #df8d1e;
+$dorange: #df8d38;
+$cream: #e3e3e3;
+$lcream: #f6f6f6;
+$iprblack: #222222;
+$iprgrey: #dadada;
+$iprlblack: #434444;
+$mountfonts: #5235ad;
+/* Font CSS */
+$f_normal: normal;
+$f_light: 300;
+$f_medium: 500;
+$f_semibold: 600;
+$f_bold: bold;
+$f_black: 800;
+$f_blackbold: 900;
+
+/* Border Radius */
+$border-radius: 0px;
+$chartbox-border-radius: 5px;
+/* Box shadow */
+$box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+$box-shadow-high: 0px 5px 12px rgba(0, 0, 0, 0.2);
+
+/*
+Fonts
+==============================
+*/
+
+@keyframes DropDownSlide {
+  from {
+    top: -50px;
+  }
+  to {
+    top: 0;
+  }
+}
+@keyframes mymove {
+  from {
+    left: 8px;
+  }
+  to {
+    left: 0px;
+  }
+}
