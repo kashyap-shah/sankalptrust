@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   const { username, password } = req.body;
 
   try {
-    const [rows] = await pool.query("SELECT * FROM users WHERE username = ? AND role = 'admin'", [username]);
+    const [rows] = await pool.query("SELECT * FROM users WHERE username = $1 AND role = 'admin'", [username]);
     if (rows.length === 0) return res.status(400).send("User not found");
 
     const user = rows[0];
