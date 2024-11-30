@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   if (req.method === "GET") {
     // Fetch all shows
     try {
-      const [shows] = await pool.execute(
+      const [shows] = await pool.query(
         "SELECT * FROM shows WHERE deleted_at IS NULL"
       );
 
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
         VALUES (?, ?, ?, ?, ?, ?, ?)
       `;
 
-      await pool.execute(sql, [
+      await pool.query(sql, [
         title,
         time,
         venue,
