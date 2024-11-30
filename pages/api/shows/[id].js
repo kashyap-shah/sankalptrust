@@ -7,17 +7,17 @@ export default async function handler(req, res) {
   // Handling GET request to fetch a single show by ID
   if (req.method === "GET") {
     try {
+      const showQuery = `
+        SELECT * FROM shows 
+        WHERE id = $1 AND deleted_at IS NULL
+      `;
+      const showResult = await pool.query(showQuery, [id]);
 
-      const [show] = await pool.query(
-        "SELECT * FROM shows WHERE id = ? AND deleted_at IS NULL",
-        [id]
-      );
-
-      if (show.length === 0) {
+      if (showResult.rows.length === 0) {
         return res.status(404).json({ error: "Show not found" });
       }
 
-      res.status(200).json(show[0]);
+      res.status(200).json(showResult.rows[0]);
     } catch (error) {
       res.status(500).json({ error: "Server error: " + error.message });
     }
@@ -41,16 +41,18 @@ export default async function handler(req, res) {
 
     try {
       const decoded = jwt.verify(token, "secretkey");
-      if (decoded.role !== "admin")
+      if (decoded.role !== "admin") {
         return res.status(403).json({ error: "Access Denied. Admin only." });
+      }
 
-      const sql = `
+      const updateQuery = `
         UPDATE shows
-        SET title = ?, time = ?, venue = ?, google_maps_link = ?, total_seats = ?, seat_rows = ?, seat_columns = ?
-        WHERE id = ? AND deleted_at IS NULL
+        SET title = $1, time = $2, venue = $3, google_maps_link = $4, 
+            total_seats = $5, seat_rows = $6, seat_columns = $7
+        WHERE id = $8 AND deleted_at IS NULL
       `;
 
-      const [result] = await pool.query(sql, [
+      const result = await pool.query(updateQuery, [
         title,
         time,
         venue,
@@ -61,7 +63,7 @@ export default async function handler(req, res) {
         id,
       ]);
 
-      if (result.affectedRows === 0) {
+      if (result.rowCount === 0) {
         return res.status(404).json({ error: "Show not found" });
       }
 
@@ -83,18 +85,19 @@ export default async function handler(req, res) {
 
     try {
       const decoded = jwt.verify(token, "secretkey");
-      if (decoded.role !== "admin")
+      if (decoded.role !== "admin") {
         return res.status(403).json({ error: "Access Denied. Admin only." });
+      }
 
-      const sql = `
+      const deleteQuery = `
         UPDATE shows
         SET deleted_at = NOW()
-        WHERE id = ? AND deleted_at IS NULL
+        WHERE id = $1 AND deleted_at IS NULL
       `;
 
-      const [result] = await pool.query(sql, [id]);
+      const result = await pool.query(deleteQuery, [id]);
 
-      if (result.affectedRows === 0) {
+      if (result.rowCount === 0) {
         return res.status(404).json({ error: "Show not found" });
       }
 
