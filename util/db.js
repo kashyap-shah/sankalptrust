@@ -1,15 +1,16 @@
 // lib/db.js
-import mysql from 'mysql2/promise';
+const { Pool } = require('pg');
 
-// Create a connection pool
-const pool = mysql.createPool({
-  host: process.env.DB_HOST, // Database host
-  user: process.env.DB_USER, // Database user
-  password: process.env.DB_PASSWORD, // Database password
-  database: process.env.DB_NAME, // Database name
-  waitForConnections: true,
-  connectionLimit: 10, // Set the connection limit based on your app's needs
-  queueLimit: 0,
+// Neon connection URL from environment variables
+const connectionString = process.env.DATABASE_URL;
+
+// Create a pool using the Neon URL
+const pool = new Pool({
+    connectionString,
+    ssl: {
+        rejectUnauthorized: false, // Required for Neon
+    },
 });
 
-export default pool;
+// Export the pool for querying the database
+module.exports = pool;
