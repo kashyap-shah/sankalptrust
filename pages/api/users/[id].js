@@ -2,29 +2,23 @@ import jwt from "jsonwebtoken";
 import pool from "util/db";
 
 export default async function handler(req, res) {
-  // Database configuration
-  const dbConfig = {
-    host: "localhost",
-    user: "root",
-    password: "password123",
-    database: "auditorium_db",
-  };
-
   const { id } = req.query;
 
   // Handle GET request to fetch a single user by ID
   if (req.method === "GET") {
     try {
-      const [user] = await pool.query(
-        "SELECT id, username, phone_number, role FROM users WHERE id = ? AND end_date IS NULL",
-        [id]
-      );
+      const userQuery = `
+        SELECT id, username, phone_number, role
+        FROM users
+        WHERE id = $1 AND end_date IS NULL
+      `;
+      const userResult = await pool.query(userQuery, [id]);
 
-      if (user.length === 0) {
+      if (userResult.rows.length === 0) {
         return res.status(404).json({ error: "User not found" });
       }
 
-      res.status(200).json(user[0]);
+      res.status(200).json(userResult.rows[0]);
     } catch (error) {
       res.status(500).json({ error: "Server error: " + error.message });
     }
@@ -40,20 +34,24 @@ export default async function handler(req, res) {
 
     try {
       const decoded = jwt.verify(token, "secretkey");
-      console.log("decoded", decoded);
-      
-      if (decoded.role !== "admin")
+      if (decoded.role !== "admin") {
         return res.status(403).json({ error: "Access Denied. Admin only." });
+      }
 
-      const sql = `
+      const updateQuery = `
         UPDATE users
-        SET username = '${username}', phone_number = '${phone_number}' ${password ? ", password = '" + password + "'" : ""} 
-        WHERE id = '${id}' AND end_date IS NULL
+        SET username = $1, phone_number = $2
+        ${password ? ", password = $3" : ""}
+        WHERE id = $4 AND end_date IS NULL
       `;
 
-      const [result] = await pool.query(sql);
+      const params = [username, phone_number];
+      if (password) params.push(password);
+      params.push(id);
 
-      if (result.affectedRows === 0) {
+      const updateResult = await pool.query(updateQuery, params);
+
+      if (updateResult.rowCount === 0) {
         return res.status(404).json({ error: "User not found" });
       }
 
@@ -74,18 +72,18 @@ export default async function handler(req, res) {
 
     try {
       const decoded = jwt.verify(token, "secretkey");
-      if (decoded.role !== "admin")
+      if (decoded.role !== "admin") {
         return res.status(403).json({ error: "Access Denied. Admin only." });
+      }
 
-      const sql = `
+      const deleteQuery = `
         UPDATE users
         SET end_date = NOW()
-        WHERE id = ? AND end_date IS NULL
+        WHERE id = $1 AND end_date IS NULL
       `;
+      const deleteResult = await pool.query(deleteQuery, [id]);
 
-      const [result] = await pool.query(sql, [id]);
-
-      if (result.affectedRows === 0) {
+      if (deleteResult.rowCount === 0) {
         return res.status(404).json({ error: "User not found" });
       }
 
