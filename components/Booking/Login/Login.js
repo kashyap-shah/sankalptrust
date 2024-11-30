@@ -9,7 +9,7 @@ const UserLogin = ({ setToken }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:3000/api/login', {
+      const res = await axios.post('https://www.sankalptrust.org.in/api/login', {
         phone_number: mobile,
         password,
       });
