@@ -6,7 +6,7 @@ export default function Home(props) {
   return (
     <div>
       <Head>
-        <title>Page Title</title>
+        <title>Sankalp Trust</title>
         <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta
           name="viewport"
