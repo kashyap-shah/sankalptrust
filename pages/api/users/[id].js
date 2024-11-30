@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   // Handle GET request to fetch a single user by ID
   if (req.method === "GET") {
     try {
-      const [user] = await pool.execute(
+      const [user] = await pool.query(
         "SELECT id, username, phone_number, role FROM users WHERE id = ? AND end_date IS NULL",
         [id]
       );
@@ -51,7 +51,7 @@ export default async function handler(req, res) {
         WHERE id = '${id}' AND end_date IS NULL
       `;
 
-      const [result] = await pool.execute(sql);
+      const [result] = await pool.query(sql);
 
       if (result.affectedRows === 0) {
         return res.status(404).json({ error: "User not found" });
@@ -83,7 +83,7 @@ export default async function handler(req, res) {
         WHERE id = ? AND end_date IS NULL
       `;
 
-      const [result] = await pool.execute(sql, [id]);
+      const [result] = await pool.query(sql, [id]);
 
       if (result.affectedRows === 0) {
         return res.status(404).json({ error: "User not found" });
