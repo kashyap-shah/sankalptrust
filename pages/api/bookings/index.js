@@ -32,7 +32,7 @@ export default async function handler(req, res) {
 
   // Handle POST request to create a new booking
   else if (req.method === "POST") {
-    const { userId, showId, seatId, bookingDate } = req.body;
+    const { showId, seats } = req.body;
 
     // Validate the token for user access (assuming user must be logged in)
     const token = req.headers["auth-token"];
@@ -40,14 +40,33 @@ export default async function handler(req, res) {
 
     try {
       const decoded = jwt.verify(token, "secretkey");
-
-      // Insert a new booking record into the database
-      const [result] = await pool.query(
-        "INSERT INTO bookings (user_id, show_id, seat_id, booking_date) VALUES ($1, $2, $3, $4)",
-        [userId, showId, seatId, bookingDate]
-      );
-
-      res.status(201).json({ message: "Booking created successfully", bookingId: result.insertId });
+      const userId = decoded.id; // Assuming `id` is part of the decoded token payload
+  
+      if (!seats || !Array.isArray(seats) || seats.length === 0) {
+        return res.status(400).json({ error: "Invalid seats data." });
+      }
+  
+      // Prepare query for bulk insert
+      const queryText = `
+        INSERT INTO bookings (user_id, show_id, seat_row, seat_column)
+        VALUES 
+        ${seats.map(() => "($1, $2, $3, $4)").join(", ")}
+        RETURNING id
+      `;
+  
+      // Map seat data to an array of values for each booking
+      const values = [];
+      seats.forEach(({ row, column }) => {
+        values.push(userId, showId, row, column);
+      });
+  
+      // Execute the query
+      const { rows } = await pool.query(queryText, values);
+  
+      res.status(201).json({
+        message: "Bookings created successfully",
+        bookingIds: rows.map(row => row.id),
+      });
     } catch (error) {
       if (error.name === "JsonWebTokenError") {
         return res.status(401).json({ error: "Invalid token." });
