@@ -22,7 +22,7 @@ export default async function handler(req, res) {
         params.push(userId);
       }
 
-      const [bookings] = await pool.execute(query, params);
+      const [bookings] = await pool.query(query, params);
 
       res.status(200).json(bookings);
     } catch (error) {
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
       const decoded = jwt.verify(token, "secretkey");
 
       // Insert a new booking record into the database
-      const [result] = await pool.execute(
+      const [result] = await pool.query(
         "INSERT INTO bookings (user_id, show_id, seat_id, booking_date) VALUES (?, ?, ?, ?)",
         [userId, showId, seatId, bookingDate]
       );
