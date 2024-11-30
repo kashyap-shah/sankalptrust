@@ -17,6 +17,6 @@ export default async function handler(req, res) {
     res.setHeader("auth-token", token).send({ token });
 
   } catch (error) {
-    res.status(500).send("Server error");
+    res.status(500).send(error);
   }
 }
