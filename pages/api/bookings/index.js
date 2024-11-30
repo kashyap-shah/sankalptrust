@@ -13,12 +13,12 @@ export default async function handler(req, res) {
 
       // Filter bookings by showId or userId if provided
       if (showId) {
-        query += " AND show_id = ?";
+        query += " AND show_id = $1";
         params.push(showId);
       }
 
       if (userId) {
-        query += " AND user_id = ?";
+        query += " AND user_id = $" + (showId ? "$2" : "$1");
         params.push(userId);
       }
 
@@ -43,7 +43,7 @@ export default async function handler(req, res) {
 
       // Insert a new booking record into the database
       const [result] = await pool.query(
-        "INSERT INTO bookings (user_id, show_id, seat_id, booking_date) VALUES (?, ?, ?, ?)",
+        "INSERT INTO bookings (user_id, show_id, seat_id, booking_date) VALUES ($1, $2, $3, $4)",
         [userId, showId, seatId, bookingDate]
       );
 
