@@ -46,19 +46,21 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "Invalid seats data." });
       }
   
-      // Prepare query for bulk insert
-      const queryText = `
-        INSERT INTO bookings (user_id, show_id, seat_row, seat_column)
-        VALUES 
-        ${seats.map(() => "($1, $2, $3, $4)").join(", ")}
-        RETURNING id
-      `;
-  
-      // Map seat data to an array of values for each booking
+       // Prepare the values and placeholders for bulk insert
+      const valuePlaceholders = seats
+        .map((_, index) => `($${index * 4 + 1}, $${index * 4 + 2}, $${index * 4 + 3}, $${index * 4 + 4})`)
+        .join(", ");
+      
       const values = [];
       seats.forEach(({ row, column }) => {
         values.push(userId, showId, row, column);
       });
+  
+      const queryText = `
+        INSERT INTO bookings (user_id, show_id, seat_row, seat_column)
+        VALUES ${valuePlaceholders}
+        RETURNING id
+      `;
   
       // Execute the query
       const { rows } = await pool.query(queryText, values);
