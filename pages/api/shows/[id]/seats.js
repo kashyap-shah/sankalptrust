@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
   try {
     // Fetch seat configuration for the given show
-    const [showResults] = await pool.execute(
+    const [showResults] = await pool.query(
       'SELECT seat_rows, seat_columns FROM shows WHERE id = ?',
       [showId]
     );
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     const { seat_rows, seat_columns } = showResults[0];
 
     // Fetch booked seats for the given show
-    const [bookedResults] = await pool.execute(
+    const [bookedResults] = await pool.query(
       'SELECT seat_row, seat_column FROM bookings WHERE show_id = ?',
       [showId]
     );
