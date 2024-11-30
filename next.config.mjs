@@ -11,10 +11,10 @@ const nextConfig = {
 	httpAgentOptions: {
 		keepAlive: false,
 	},
-	distDir: process.env.NODE_ENV == 'development' ? '.next' : `build/${buildname}`,
-	generateBuildId: async () => {
-		return buildname;
-	},
+	// distDir: process.env.NODE_ENV == 'development' ? '.next' : `build/${buildname}`,
+	// generateBuildId: async () => {
+	// 	return buildname;
+	// },
 }
 
 export default nextConfig
