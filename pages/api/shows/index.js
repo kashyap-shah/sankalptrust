@@ -2,22 +2,13 @@ import jwt from "jsonwebtoken";
 import pool from "util/db";
 
 export default async function handler(req, res) {
-  // Database configuration
-  const dbConfig = {
-    host: "localhost",
-    user: "root",
-    password: "password123",
-    database: "auditorium_db",
-  };
-
   if (req.method === "GET") {
     // Fetch all shows
     try {
-      const [shows] = await pool.query(
-        "SELECT * FROM shows WHERE deleted_at IS NULL"
-      );
+      const showQuery = "SELECT * FROM shows WHERE deleted_at IS NULL";
+      const showResult = await pool.query(showQuery);
 
-      res.status(200).json(shows);
+      res.status(200).json(showResult.rows);
     } catch (error) {
       res.status(500).json({ error: "Server error: " + error.message });
     }
@@ -35,19 +26,22 @@ export default async function handler(req, res) {
 
     // Validate the token for admin access
     const token = req.headers["auth-token"];
-    if (!token) return res.status(401).json({ error: "Access denied. No token provided." });
+    if (!token) {
+      return res.status(401).json({ error: "Access denied. No token provided." });
+    }
 
     try {
       const decoded = jwt.verify(token, "secretkey");
-      if (decoded.role !== "admin")
+      if (decoded.role !== "admin") {
         return res.status(403).json({ error: "Access Denied. Admin only." });
+      }
 
-      const sql = `
+      const insertQuery = `
         INSERT INTO shows (title, time, venue, google_maps_link, total_seats, seat_rows, seat_columns)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
       `;
 
-      await pool.query(sql, [
+      await pool.query(insertQuery, [
         title,
         time,
         venue,
