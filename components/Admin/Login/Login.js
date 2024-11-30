@@ -10,7 +10,7 @@ const Login = ({ setToken }) => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/admin/login",
+        "https://www.sankalptrust.org.in/api/admin/login",
         { username, password },
         { headers: { "Content-Type": "application/json" }, withCredentials: false }
       );
