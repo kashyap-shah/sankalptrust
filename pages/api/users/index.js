@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   if (req.method === "GET") {
     try {
 
-      const [users] = await pool.execute("SELECT id, username, phone_number, role FROM users WHERE end_date IS NULL AND role = 'user'");
+      const [users] = await pool.query("SELECT id, username, phone_number, role FROM users WHERE end_date IS NULL AND role = 'user'");
 
       res.status(200).json(users);
     } catch (error) {
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
       if (decoded.role !== "admin")
         return res.status(403).json({ error: "Access Denied. Admin only." });
 
-      const [user] = await pool.execute(
+      const [user] = await pool.query(
         `SELECT id, username, phone_number, role FROM users WHERE phone_number = ${phone_number} AND role = 'user' AND end_date IS NULL`);
 
       if (user.length > 0) {
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
       }
 
       // Insert new user into the database
-      const [result] = await pool.execute(
+      const [result] = await pool.query(
         "INSERT INTO users (username, phone_number, password, role) VALUES (?, ?, ?, ?)",
         [username, phone_number, password, role]
       );
