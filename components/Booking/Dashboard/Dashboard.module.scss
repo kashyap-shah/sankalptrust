@@ -57,6 +57,7 @@
 
     .subtitle {
       margin-bottom: 10px;
+      font-size: 1.5rem;
     }
 
     .screen {
@@ -65,25 +66,24 @@
       padding: 10px;
       margin-bottom: 20px;
       border-radius: 5px;
+      font-size: 1rem;
     }
 
     .seat-grid {
       display: grid;
-      gap: 15px; // Ensure there is enough spacing between grid items
+      gap: 10px;
       justify-content: center;
 
       .seat {
-        position: relative; // Ensure seat info is properly placed relative to each seat
-        width: 60px; // Adjust seat size for better readability
-        height: 60px;
+        width: 40px;
+        height: 40px;
+        font-size: 12px;
         text-align: center;
-        line-height: 60px; // Align text vertically
-        font-size: 14px;
+        line-height: 40px;
         border: 1px solid #ddd;
-        border-radius: 8px;
+        border-radius: 5px;
         background-color: #f9f9f9;
         cursor: pointer;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
         &.booked {
           background-color: #ffcccc;
@@ -114,6 +114,43 @@
     .booking-message {
       margin-top: 20px;
       font-weight: bold;
+    }
+  }
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .seat-selection {
+    .seat-grid {
+      .seat {
+        width: 30px;
+        height: 30px;
+        font-size: 10px;
+        line-height: 30px;
+      }
+    }
+
+    .confirm-button {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .seat-selection {
+    .subtitle {
+      font-size: 1.2rem;
+    }
+
+    .seat-grid {
+      gap: 5px;
+
+      .seat {
+        width: 25px;
+        height: 25px;
+        font-size: 8px;
+        line-height: 25px;
+      }
     }
   }
 }
