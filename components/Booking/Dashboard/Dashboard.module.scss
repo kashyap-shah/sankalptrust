@@ -1,36 +1,37 @@
 .booking-page {
   padding: 20px;
+  font-family: Arial, sans-serif;
 
   .title {
-    font-size: 24px;
+    text-align: center;
     margin-bottom: 20px;
-    text-align: center;
-  }
-
-  .subtitle {
-    font-size: 20px;
-    margin-bottom: 10px;
-    text-align: center;
+    font-size: 2rem;
   }
 
   .show-list {
-    margin-bottom: 20px;
     list-style: none;
     padding: 0;
+    margin: 20px 0;
 
     .show-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
 
       .book-button {
-        margin-left: 10px;
         padding: 5px 10px;
-        background-color: #4caf50;
-        color: white;
+        background-color: #007bff;
+        color: #fff;
         border: none;
-        border-radius: 3px;
+        border-radius: 5px;
         cursor: pointer;
+
         &:hover {
-          background-color: #45a049;
+          background-color: #0056b3;
         }
       }
     }
@@ -39,84 +40,80 @@
   .logout-button {
     display: block;
     margin: 20px auto;
-    padding: 10px 15px;
-    background-color: #f44336;
-    color: white;
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: #fff;
     border: none;
-    border-radius: 3px;
+    border-radius: 5px;
     cursor: pointer;
+
     &:hover {
-      background-color: #d32f2f;
+      background-color: #a71d2a;
     }
   }
 
   .seat-selection {
-  text-align: center;
+    text-align: center;
 
-  .screen {
-    background-color: #333;
-    color: white;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    font-weight: bold;
-  }
+    .subtitle {
+      margin-bottom: 10px;
+    }
 
-  .seat-container {
-    display: grid;
-    grid-template-columns: repeat(24, 40px); // 24 columns
-    grid-template-rows: repeat(12, 40px);   // 12 rows
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .seat {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-
-    &.booked {
-      background-color: #ffcccc;
+    .screen {
+      background-color: #333;
       color: #fff;
-      cursor: not-allowed;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
     }
 
-    &.selected {
-      background-color: #4caf50;
-      color: white;
-    }
+    .seat-grid {
+      display: grid;
+      gap: 15px; // Ensure there is enough spacing between grid items
+      justify-content: center;
 
-    &:hover {
-      border-color: #888;
+      .seat {
+        position: relative; // Ensure seat info is properly placed relative to each seat
+        width: 60px; // Adjust seat size for better readability
+        height: 60px;
+        text-align: center;
+        line-height: 60px; // Align text vertically
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        &.booked {
+          background-color: #ffcccc;
+          cursor: not-allowed;
+        }
+
+        &.selected {
+          background-color: #4caf50;
+          color: #fff;
+        }
+      }
     }
-  }
-}
 
     .confirm-button {
       margin-top: 20px;
       padding: 10px 20px;
-      background-color: #4caf50;
-      color: white;
+      background-color: #28a745;
+      color: #fff;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+
       &:hover {
-        background-color: #45a049;
+        background-color: #218838;
       }
     }
 
     .booking-message {
-      margin-top: 10px;
-      font-size: 16px;
-      color: #333;
+      margin-top: 20px;
+      font-weight: bold;
     }
   }
 }
