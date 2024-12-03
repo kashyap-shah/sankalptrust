@@ -60,31 +60,31 @@ export default async function handler(req, res) {
           message: "Booking limit exceeded. You can only book up to 2 tickets per show.",
           status: false,
         });
+      }else{
+         // Prepare the values and placeholders for bulk insert
+        const valuePlaceholders = seats
+          .map((_, index) => `($${index * 4 + 1}, $${index * 4 + 2}, $${index * 4 + 3}, $${index * 4 + 4})`)
+          .join(", ");
+        
+        const values = [];
+        seats.forEach(({ row, column }) => {
+          values.push(userId, showId, row, column);
+        });
+    
+        const queryText = `
+          INSERT INTO bookings (user_id, show_id, seat_row, seat_column)
+          VALUES ${valuePlaceholders}
+          RETURNING id
+        `;
+    
+        // Execute the query
+        const { rows } = await pool.query(queryText, values);
+    
+        res.status(201).json({
+          message: "Bookings created successfully",
+          bookingIds: rows.map(row => row.id),
+        });
       }
-  
-       // Prepare the values and placeholders for bulk insert
-      const valuePlaceholders = seats
-        .map((_, index) => `($${index * 4 + 1}, $${index * 4 + 2}, $${index * 4 + 3}, $${index * 4 + 4})`)
-        .join(", ");
-      
-      const values = [];
-      seats.forEach(({ row, column }) => {
-        values.push(userId, showId, row, column);
-      });
-  
-      const queryText = `
-        INSERT INTO bookings (user_id, show_id, seat_row, seat_column)
-        VALUES ${valuePlaceholders}
-        RETURNING id
-      `;
-  
-      // Execute the query
-      const { rows } = await pool.query(queryText, values);
-  
-      res.status(201).json({
-        message: "Bookings created successfully",
-        bookingIds: rows.map(row => row.id),
-      });
     } catch (error) {
       if (error.name === "JsonWebTokenError") {
         return res.status(401).json({ error: "Invalid token." });
