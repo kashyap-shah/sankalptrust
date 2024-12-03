@@ -71,23 +71,24 @@
 
     .seat-grid {
       display: grid;
-      gap: 10px;
       justify-content: center;
+      margin: 0 auto;
+      width: 100%; /* Full width on mobile */
+      max-width: 100%; /* Prevent overflow */
 
       .seat {
-        width: 40px;
+        width: 100%; /* Responsive width */
+        max-width: 40px; /* Default size for larger screens */
         height: 40px;
         font-size: 12px;
+        border-radius: 5px;
         text-align: center;
         line-height: 40px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        background-color: #f9f9f9;
         cursor: pointer;
 
         &.booked {
-          background-color: #ffcccc;
-          cursor: not-allowed;
+          background: var(--danger); /* Assume better themes */
+          disabled: true;
         }
 
         &.selected {
