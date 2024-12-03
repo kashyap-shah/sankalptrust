@@ -56,8 +56,9 @@ export default async function handler(req, res) {
       const newTickets = seats.length;
 
       if (existingTickets + newTickets > 2) {
-        return res.status(400).json({
-          error: "Booking limit exceeded. You can only book up to 2 tickets per show."
+        res.status(201).json({
+          message: "Booking limit exceeded. You can only book up to 2 tickets per show.",
+          status: false,
         });
       }
   
