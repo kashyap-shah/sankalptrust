@@ -51,7 +51,7 @@ const Shows = () => {
       if (isEditing) {
         // Send update request if editing
         await axios.put(
-          `https://www.sankalptrust.org.in/api/shows/${editShowId}`,
+          `/api/shows/${editShowId}`,
           newShow,
           {
             headers: { "auth-token": localStorage.getItem("token") },
@@ -60,7 +60,7 @@ const Shows = () => {
         setErrorMessage(""); // Clear error messages
       } else {
         // Send request to add the new show
-        await axios.post("https://www.sankalptrust.org.in/api/shows", newShow, 
+        await axios.post("/api/shows", newShow, 
           {
           headers: { "auth-token": localStorage.getItem("token") },
           }
@@ -80,7 +80,7 @@ const Shows = () => {
       setEditShowId(null); // Clear the editing show ID
 
       // Refetch shows after adding or updating the show
-      const res = await axios.get("https://www.sankalptrust.org.in/api/shows", 
+      const res = await axios.get("/api/shows", 
         {
         headers: { "auth-token": localStorage.getItem("token") },
         }
@@ -112,7 +112,7 @@ const Shows = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://www.sankalptrust.org.in/api/shows/${id}`, 
+      await axios.delete(`/api/shows/${id}`, 
         {
         headers: { "auth-token": localStorage.getItem("token") },
         }
