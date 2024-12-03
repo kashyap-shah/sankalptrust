@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import styles from "./Dashboard.module.scss"; // Import the SCSS file
+import styles from "./Dashboard.module.scss";
 
 const Dashboard = () => {
   const [shows, setShows] = useState([]);
@@ -12,11 +12,9 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchShows = async () => {
       try {
-        const res = await axios.get("https://www.sankalptrust.org.in/api/shows", 
-          {
+        const res = await axios.get("https://www.sankalptrust.org.in/api/shows", {
           headers: { "auth-token": localStorage.getItem("user-token") },
-          }
-        );
+        });
         setShows(res.data);
       } catch (err) {
         console.error("Failed to fetch shows", err);
@@ -73,6 +71,9 @@ const Dashboard = () => {
     window.location.reload();
   };
 
+  const maxColumns = Math.max(...seats.map((seat) => seat.column));
+  const midPoint = Math.ceil(maxColumns / 2);
+
   return (
     <div className={styles["booking-page"]}>
       <h1 className={styles["title"]}>Available Shows</h1>
@@ -95,39 +96,59 @@ const Dashboard = () => {
 
       {selectedShow && (
         <div className={styles["seat-selection"]}>
-          <h2 className={styles["subtitle"]}>Seat Selection for {selectedShow?.title}</h2>
+          <h2 className={styles["subtitle"]}>
+            Seat Selection for {selectedShow?.title}
+          </h2>
           <div className={styles["screen"]}>SCREEN</div>
-          <div
-            className={styles["seat-grid"]}
-            style={{
-              gridTemplateColumns: `repeat(${Math.max(
-                ...seats.map((seat) => seat.column)
-              )}, 1fr)`, // Correct column count
-              gap: "10px", // Add spacing between seats
-              // padding: "20px", // Optional padding for better appearance
-            }}
-          >
-            {seats.map((seat) => (
-              <button
-                key={`${seat.row}-${seat.column}`}
-                onClick={() => handleSeatSelect(seat)}
-                className={`${styles.seat} ${styles[
-                  seat.booked
-                    ? "booked"
-                    : selectedSeats.some(
-                        (s) => s.row === seat.row && s.column === seat.column
-                      )
-                    ? "selected"
-                    : ""
-                ]}`}
-                disabled={seat.booked}
-                title={`Row: ${seat.row}, Column: ${seat.column}`}
-              >
-                {seat.booked ? "🚫" : "🪑"}
-            </button>
-            ))}
+          <div className={styles["seat-container"]}>
+            <div className={styles["left-seats"]}>
+              {seats
+                .filter((seat) => seat.column <= midPoint)
+                .map((seat) => (
+                  <button
+                    key={`${seat.row}-${seat.column}`}
+                    onClick={() => handleSeatSelect(seat)}
+                    className={`${styles.seat} ${
+                      seat.booked
+                        ? styles.booked
+                        : selectedSeats.some(
+                            (s) => s.row === seat.row && s.column === seat.column
+                          )
+                        ? styles.selected
+                        : ""
+                    }`}
+                    disabled={seat.booked}
+                    title={`Row: ${seat.row}, Column: ${seat.column}`}
+                  >
+                    {seat.booked ? "🚫" : "🪑"}
+                  </button>
+                ))}
+            </div>
+            <div className={styles["walkway"]}>Walkway</div>
+            <div className={styles["right-seats"]}>
+              {seats
+                .filter((seat) => seat.column > midPoint)
+                .map((seat) => (
+                  <button
+                    key={`${seat.row}-${seat.column}`}
+                    onClick={() => handleSeatSelect(seat)}
+                    className={`${styles.seat} ${
+                      seat.booked
+                        ? styles.booked
+                        : selectedSeats.some(
+                            (s) => s.row === seat.row && s.column === seat.column
+                          )
+                        ? styles.selected
+                        : ""
+                    }`}
+                    disabled={seat.booked}
+                    title={`Row: ${seat.row}, Column: ${seat.column}`}
+                  >
+                    {seat.booked ? "🚫" : "🪑"}
+                  </button>
+                ))}
+            </div>
           </div>
-
           <button onClick={handleBooking} className={styles["confirm-button"]}>
             Confirm Booking
           </button>
