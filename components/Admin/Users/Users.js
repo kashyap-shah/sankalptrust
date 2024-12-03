@@ -16,7 +16,7 @@ const Users = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("https://www.sankalptrust.org.in/api/users", 
+      const res = await axios.get("/api/users", 
         {
         headers: { "auth-token": localStorage.getItem("token") },
         }
@@ -44,7 +44,7 @@ const Users = () => {
 
         try {
           await axios.put(
-            `https://www.sankalptrust.org.in/api/users/${userId}`,
+            `/api/users/${userId}`,
             updatedData,
             {
               headers: { "auth-token": localStorage.getItem("token") },
@@ -58,7 +58,7 @@ const Users = () => {
         // For adding a new user, password is required
         try {
           await axios.post(
-            "https://www.sankalptrust.org.in/api/users",
+            "/api/users",
             { username, password: changePassword, phone_number: phoneNumber },
             {
               headers: { "auth-token": localStorage.getItem("token") },
@@ -88,7 +88,7 @@ const Users = () => {
 
   const handleDelete = async (userId) => {
     try {
-      await axios.delete(`https://www.sankalptrust.org.in/api/users/${userId}`, 
+      await axios.delete(`/api/users/${userId}`, 
         {
         headers: { "auth-token": localStorage.getItem("token") },
         }
