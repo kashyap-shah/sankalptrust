@@ -45,6 +45,21 @@ export default async function handler(req, res) {
       if (!seats || !Array.isArray(seats) || seats.length === 0) {
         return res.status(400).json({ error: "Invalid seats data." });
       }
+
+      // Check existing bookings for the user in the specified show
+      const [existingBookings] = await pool.query(
+        "SELECT COUNT(*) AS ticket_count FROM bookings WHERE user_id = $1 AND show_id = $2",
+        [userId, showId]
+      );
+
+      const existingTickets = parseInt(existingBookings[0].ticket_count, 10);
+      const newTickets = seats.length;
+
+      if (existingTickets + newTickets > 2) {
+        return res.status(400).json({
+          error: "Booking limit exceeded. You can only book up to 2 tickets per show."
+        });
+      }
   
        // Prepare the values and placeholders for bulk insert
       const valuePlaceholders = seats
