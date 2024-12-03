@@ -54,16 +54,22 @@ const Dashboard = () => {
 
   const handleBooking = async () => {
     try {
-      await axios.post(
+      let res = await axios.post(
         "/api/bookings",
         { showId: selectedShow?.id, seats: selectedSeats },
         { headers: { "auth-token": localStorage.getItem("user-token") } }
       );
-      setBookingMessage("Booking confirmed!");
+
+      if(res?.status == false && res?.message){
+        alert(res?.message);
+        setBookingMessage(res?.message);
+      }else{
+        setBookingMessage("Booking confirmed!");
+        handleBookShow(selectedShow);
+      }
       setSelectedSeats([]);
-      handleBookShow(selectedShow);
     } catch (err) {
-      console.error("Failed to book seats", err);
+      // console.error("Failed to book seats", err);
       setBookingMessage("Booking failed. Please try again.");
     }
   };
