@@ -62,7 +62,7 @@ const Dashboard = () => {
 
       if(res?.data?.status == false && res?.data?.message){
         alert(res?.message);
-        setBookingMessage(res?.message);
+        setBookingMessage(res?.data?.message);
       }else{
         setBookingMessage("Booking confirmed!");
         handleBookShow(selectedShow);
