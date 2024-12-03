@@ -8,7 +8,6 @@ const Dashboard = () => {
   const [seats, setSeats] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [bookingMessage, setBookingMessage] = useState("");
-console.log(selectedSeats);
 
   useEffect(() => {
     const fetchShows = async () => {
@@ -120,11 +119,12 @@ console.log(selectedSeats);
                       )
                     ? "selected"
                     : ""
-                ] }`}
+                ]}`}
                 disabled={seat.booked}
+                title={`Row: ${seat.row}, Column: ${seat.column}`}
               >
                 {seat.booked ? "🚫" : "🪑"}
-              </button>
+            </button>
             ))}
           </div>
 
