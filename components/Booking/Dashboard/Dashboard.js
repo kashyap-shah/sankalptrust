@@ -59,8 +59,8 @@ const Dashboard = () => {
         { showId: selectedShow?.id, seats: selectedSeats },
         { headers: { "auth-token": localStorage.getItem("user-token") } }
       );
-console.log("res", res)
-      if(res?.status == false && res?.message){
+
+      if(res?.data?.status == false && res?.data?.message){
         alert(res?.message);
         setBookingMessage(res?.message);
       }else{
