@@ -52,9 +52,9 @@ export default async function handler(req, res) {
         [userId, showId]
       );
 
-      const existingTickets = parseInt(existingBookings[0].ticket_count, 10);
+      const existingTickets = existingBookings?.length > 0 ? parseInt(existingBookings[0].ticket_count, 10) : 0;
       const newTickets = seats.length;
-
+console.log("existingTickets",existingTickets);
       if (existingTickets + newTickets > 2) {
         res.status(201).json({
           message: "Booking limit exceeded. You can only book up to 2 tickets per show.",
