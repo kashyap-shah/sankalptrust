@@ -47,14 +47,14 @@ export default async function handler(req, res) {
       }
 
       // Check existing bookings for the user in the specified show
-      const [existingBookings] = await pool.query(
+      const result = await pool.query(
         "SELECT COUNT(*) AS ticket_count FROM bookings WHERE user_id = $1 AND show_id = $2",
         [userId, showId]
       );
 
-      const existingTickets = existingBookings?.length > 0 ? parseInt(existingBookings[0].ticket_count, 10) : 0;
+      const existingTickets = result.rows && result.rows[0] ? result.rows[0].ticket_count : 0;
       const newTickets = seats.length;
-console.log("existingTickets",existingTickets);
+
       if (existingTickets + newTickets > 2) {
         res.status(201).json({
           message: "Booking limit exceeded. You can only book up to 2 tickets per show.",
