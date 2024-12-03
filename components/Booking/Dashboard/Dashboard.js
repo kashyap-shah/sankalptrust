@@ -12,7 +12,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchShows = async () => {
       try {
-        const res = await axios.get("https://www.sankalptrust.org.in/api/shows", 
+        const res = await axios.get("/api/shows", 
           {
           headers: { "auth-token": localStorage.getItem("user-token") },
           }
@@ -28,7 +28,7 @@ const Dashboard = () => {
   const handleBookShow = async (showData) => {
     try {
       const res = await axios.get(
-        `https://www.sankalptrust.org.in/api/shows/${showData?.id}/seats`,
+        `/api/shows/${showData?.id}/seats`,
         {
           headers: { "auth-token": localStorage.getItem("user-token") },
         }
@@ -55,7 +55,7 @@ const Dashboard = () => {
   const handleBooking = async () => {
     try {
       await axios.post(
-        "https://www.sankalptrust.org.in/api/bookings",
+        "/api/bookings",
         { showId: selectedShow?.id, seats: selectedSeats },
         { headers: { "auth-token": localStorage.getItem("user-token") } }
       );
