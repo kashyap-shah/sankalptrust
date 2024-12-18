@@ -113,6 +113,31 @@ const Dashboard = () => {
               // padding: "20px", // Optional padding for better appearance
             }}
           >
+           <div
+            className={styles["walkway"]}
+            style={{
+              gridColumn: "13",
+              gridRow: 1 / span ${Math.max(...seats.map((seat) => seat.row)) + 1},
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "bold",
+              color: "#666",
+            }}
+          >
+            {"WALKWAY".split("").map((letter, index) => (
+              <span
+                key={index}
+                style={{
+                  marginBottom: "8px",
+                  lineHeight: "1.5",
+                }}
+              >
+                {letter}
+              </span>
+            ))}
+          </div>
             {seats.map((seat) => (
               <button
                 key={`${seat.row}-${seat.column}`}
