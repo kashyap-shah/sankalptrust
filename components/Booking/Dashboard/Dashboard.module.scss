@@ -69,21 +69,20 @@
 
     .seat-grid {
       display: grid;
-      gap: 15px; // Ensure there is enough spacing between grid items
+      gap: 15px;
       justify-content: center;
 
       .seat {
-        position: relative; // Ensure seat info is properly placed relative to each seat
-        width: 60px; // Adjust seat size for better readability
-        height: 60px;
+        position: relative;
+        width: 45px;
+        height: 45px;
         text-align: center;
-        line-height: 60px; // Align text vertically
-        font-size: 14px;
+        line-height: 50px;
+        font-size: 12px;
         border: 1px solid #ddd;
         border-radius: 8px;
         background-color: #f9f9f9;
         cursor: pointer;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
         &.booked {
           background-color: #ffcccc;
@@ -93,6 +92,37 @@
         &.selected {
           background-color: #4caf50;
           color: #fff;
+        }
+      }
+
+      .walkway {
+        grid-column: span 1;
+        background-color: transparent;
+        height: 100%;
+      }
+
+      @media (min-width: 769px) {
+        grid-template-columns: repeat(25, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .seat-grid {
+        max-width: 100%;
+        height: 300px;
+        overflow-y: auto;
+        overflow-x: auto;
+        justify-content: unset;
+        grid-template-columns: repeat(
+          10,
+          1fr
+        );
+
+        .seat {
+          width: 35px;
+          height: 35px;
+          font-size: 10px;
+          line-height: 35px;
         }
       }
     }
