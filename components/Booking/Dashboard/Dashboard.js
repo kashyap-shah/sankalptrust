@@ -108,7 +108,7 @@ const Dashboard = () => {
             style={{
               gridTemplateColumns: `repeat(${Math.max(
                 ...seats.map((seat) => seat.column)
-              )}, 1fr)`, // Correct column count
+              ) + 1}, 1fr)`, // Correct column count
               gap: "10px", // Add spacing between seats
               // padding: "20px", // Optional padding for better appearance
             }}
