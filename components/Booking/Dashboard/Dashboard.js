@@ -117,7 +117,7 @@ const Dashboard = () => {
             className={styles["walkway"]}
             style={{
               gridColumn: "13",
-              gridRow: 1 / span ${Math.max(...seats.map((seat) => seat.row)) + 1},
+              gridRow: `${Math.max(...seats.map((seat) => seat.row)) + 1}`,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
